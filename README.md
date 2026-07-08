@@ -18,7 +18,7 @@ This project is a personal journey to understand how web servers work beneath fr
 
 ## Current Progress
 
-### ✅ Networking Layer
+### Networking Layer
 
 - TCP server using Linux socket APIs
 - Socket creation
@@ -28,7 +28,7 @@ This project is a personal journey to understand how web servers work beneath fr
 - Sending and receiving raw bytes
 - Successfully communicates with modern browsers
 
-### 🚧 HTTP Layer
+### HTTP Layer
 
 - Request parsing *(In Progress)*
 - Response generation *(Planned)*

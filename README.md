@@ -1,5 +1,4 @@
 # http-web-server
-# RahulHTTP
 
 A lightweight HTTP server written in C from scratch using Linux socket APIs.
 

@@ -5,6 +5,8 @@
 #include <stdint.h> // for fixed-width integer types 
 #include <stddef.h>
 
+#define MAX_REQUEST_BUFFER 16000
+
 typedef struct 
 {
     int fd; 
@@ -22,8 +24,8 @@ Server create_server(const char* ip, uint16_t port, int backlog);
 // listens and accepts TCP requests from clients with backlog and returns fd of client
 Client accept_request(Server* server);
 
-// this function reads from client sockets and returns number of bytes of request
-int receive_request(Client* client, char* request_buffer, size_t size);
+// this function reads from client sockets and returns the pointer to the buffer where request is appended
+char* receive_request(Client* client);
 
 // this function writes response of requested resource to client socket and returns number of bytes written
 int send_response(Client* client, char* response_buffer, size_t size);

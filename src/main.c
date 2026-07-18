@@ -1,4 +1,5 @@
 #include "server.h"
+#include "http.h"
 #include <stdio.h>
 int main(){
     // create server instance
@@ -16,12 +17,13 @@ int main(){
         Client clt;
         clt = accept_request(&server);
 
-        char req_buf[4096];
-        receive_request(&clt, req_buf, sizeof(req_buf));
+        char* raw_request = receive_request(&clt);
 
         printf("Received Request:\n");
-        printf("%s", req_buf);
+        printf("%s", raw_request);
 
+        HTTPRequest req;
+                
         close_client(&clt);
 
         i++;

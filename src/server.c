@@ -3,7 +3,7 @@
 #include <stdint.h> // for uint16_t
 #include <sys/socket.h>// for socket(), bind(), accept(), listen()
 #include <arpa/inet.h> // for structs like sockaddr sockaddr_storage
-#include <string.h> // for strlen()
+#include <string.h> // for strlen() and strstr() to search inside string
 #include <stddef.h> // for size_t
 #include <stdlib.h> // for exit()
 #include <unistd.h> // for close()
@@ -57,15 +57,54 @@ Client accept_request(Server* server){
     return client;
 }
 
-int receive_request(Client* client, char* request_buffer, size_t size){
-    int received_bytes = recv(client->fd, request_buffer, size, 0);
+char *receive_request(Client *client)
+{
+    int capacity = 1024;// initial buffer size
+    int total_received = 0;
 
-    if(received_bytes == -1){
-        perror("Request: ");
-        exit(1);
+    char *req_buf = malloc(capacity+1);
+    if (req_buf == NULL) return NULL; // allocation error
+
+    while (1)
+    {
+        // No room left? Grow before recv().
+        if (total_received == capacity){
+            int new_capacity = capacity * 2;
+            if (new_capacity > MAX_REQUEST_BUFFER){
+                free(req_buf);
+                return NULL;
+            }
+            char *temp = realloc(req_buf, new_capacity+1);
+            if (temp == NULL){
+                free(req_buf);
+                return NULL;
+            }
+            req_buf = temp;
+            capacity = new_capacity;
+        }
+
+        int bytes = recv(client->fd, req_buf + total_received,capacity - total_received, 0);
+
+        if (bytes == -1){
+            perror("recv");
+            free(req_buf);
+            return NULL;
+        }
+
+        if (bytes == 0){// Client disconnected.
+            break;
+        }
+
+        total_received += bytes;
+        req_buf[total_received] = '\0';
+
+        // Complete HTTP headers?
+        if (strstr(req_buf, "\r\n\r\n") != NULL){
+            break;
+        }
     }
 
-    return received_bytes;
+    return req_buf;
 }
 
 int send_response(Client* client, char* response_buffer, size_t size){

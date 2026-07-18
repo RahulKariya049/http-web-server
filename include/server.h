@@ -1,3 +1,5 @@
+// this module has responsibility of networking socket creation handling reading requests sending 
+
 #ifndef SERVER_H
 #define SERVER_H
 #include <stdint.h> // for fixed-width integer types 

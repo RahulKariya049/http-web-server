@@ -35,6 +35,11 @@ Server create_server(const char* ip, uint16_t port, int backlog){
 
     int listen_status = listen(server.fd, backlog);
 
+    if(listen_status == -1){
+        perror("Listen: ");
+        exit(1);
+    }
+
     return server;
 }
 

@@ -72,18 +72,19 @@ char *receive_request(Client *client)
             int new_capacity = capacity * 2;
             if (new_capacity > MAX_REQUEST_BUFFER){
                 free(req_buf);
+                printf("[LOG]: Request is too Long!!\n");
                 return NULL;
             }
             char *temp = realloc(req_buf, new_capacity+1);
             if (temp == NULL){
-                free(req_buf);
+                free(req_buf); //allocation error
                 return NULL;
             }
             req_buf = temp;
             capacity = new_capacity;
         }
 
-        int bytes = recv(client->fd, req_buf + total_received,capacity - total_received, 0);
+        int bytes = recv(client->fd, req_buf + total_received, capacity - total_received, 0);
 
         if (bytes == -1){
             perror("recv");
@@ -94,12 +95,16 @@ char *receive_request(Client *client)
         if (bytes == 0){// Client disconnected.
             break;
         }
-
+        
+        char* search_start = NULL;
+        if(total_received < 3) search_start = req_buf;
+        else search_start = req_buf + total_received - 3;
+        
         total_received += bytes;
         req_buf[total_received] = '\0';
-
-        // Complete HTTP headers?
-        if (strstr(req_buf, "\r\n\r\n") != NULL){
+        
+        // Complete HTTP headers
+        if (strstr(search_start, "\r\n\r\n") != NULL){
             break;
         }
     }

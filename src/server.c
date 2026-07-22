@@ -2,6 +2,7 @@
 #include <stdio.h> //printf()
 #include <stdint.h> // for uint16_t
 #include <sys/socket.h>// for socket(), bind(), accept(), listen()
+#include <net/if.h> // for MACRO IN_ADDRANY to listen all network interfaces
 #include <arpa/inet.h> // for structs like sockaddr sockaddr_storage
 #include <string.h> // for strlen() and strstr() to search inside string
 #include <stddef.h> // for size_t
@@ -16,15 +17,20 @@ Server create_server(const char* ip, uint16_t port, int backlog){
     server.fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if(server.fd == -1){
+        printf("[LOG]: Error creating server instance\n");
         perror("Socket: ");
         exit(1);
     }
 
-    // bind socket with appropriate ip
+    // bind socket with appropriate ip and port
     struct sockaddr_in addr_server;
     addr_server.sin_family = AF_INET;
     addr_server.sin_port = htons(port);
-    inet_pton(AF_INET, ip, &addr_server.sin_addr);
+    if(ip)
+        inet_pton(AF_INET, ip, &addr_server.sin_addr);
+    else{
+        addr_server.sin_addr.s_addr = INADDR_ANY;
+    }
 
     int bind_status = bind(server.fd, (struct sockaddr*)&addr_server, sizeof(addr_server));
 
@@ -51,7 +57,7 @@ Client accept_request(Server* server){
     client.fd = accept(server->fd, (struct sockaddr*)&addr_client, &sz);
 
     if(client.fd == -1){
-        perror("Client FD: ");
+        perror("Error connecting to client: ");
         exit(1);
     }
     return client;
@@ -87,7 +93,7 @@ char *receive_request(Client *client)
         int bytes = recv(client->fd, req_buf + total_received, capacity - total_received, 0);
 
         if (bytes == -1){
-            perror("recv");
+            perror("recv: ");
             free(req_buf);
             return NULL;
         }
@@ -116,9 +122,11 @@ int send_response(Client* client, char* response_buffer, size_t size){
     int written_bytes = send(client->fd, response_buffer, size, 0);
     
     if(written_bytes == -1){
+        printf("[LOG]: there is an error writing into client socket\n");
         perror("Response: ");
         exit(1);
     }
+    
     return written_bytes;
 }
 

@@ -3,6 +3,7 @@
 #define HTTP_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -10,6 +11,21 @@ typedef struct
     char* value;
     // this makes assumption now req buffer should be freed adter the response is generated and parser adds '\0' for us  
 } Header;
+
+typedef enum
+{
+    HTTP_OK = 200,
+    HTTP_BAD_REQUEST = 400,
+    HTTP_FORBIDDEN = 403,
+    HTTP_NOT_FOUND = 404,
+    HTTP_METHOD_NOT_ALLOWED = 405,
+    HTTP_INTERNAL_SERVER_ERROR = 500
+
+} HTTPStatus;
+
+typedef enum{
+    MIME_HTML,MIME_CSS,MIME_TEXT,MIME_PNG,MIME_SVG,MIME_JPG
+}MIMEType;
 
 typedef struct
 {
@@ -26,14 +42,23 @@ typedef struct
 
 typedef struct
 {
-    int status_code;
+    bool is_file;
 
-    Header *headers;
-    size_t header_count;
-    size_t header_capacity;
+    char *file_source;
+    char *body_source;
 
-    char *body;
-    size_t body_length;
+    size_t length;
+
+} HTTPBody;
+
+
+typedef struct
+{
+    HTTPStatus status;
+
+    HTTPBody body;
+
+    MIMEType mime;
 
 } HTTPResponse;
 

@@ -1,7 +1,14 @@
 #include "server.h"
 #include "http.h"
 #include "parser.h"
+#include "static.h"
+#include "response.h"
 #include <stdio.h>
+// these three headers are for sending appropriate file via optimised sendfile function
+#include <sys/sendfile.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 int main(){
     // create server instance
     Server server;
@@ -15,19 +22,14 @@ int main(){
 
     int i=0;
     while(i < 1){
-        // Client clt;
-        // clt = accept_request(&server);
+        Client clt;
+        clt = accept_request(&server);
 
-        // char* raw_request = receive_request(&clt);
+        char* raw_request = receive_request(&clt);
 
-        // printf("Received Request:\n");
-        // printf("%s", raw_request);
-        char raw_request[] =
-        "GET /index.html HTTP/1.1\r\n"
-        "Host: localhost:8080\r\n"
-        "User-Agent: Mozilla/5.0 (X11; Linux x86_64)\r\n"
-        "Connection: keep-alive\r\n"
-        "\r\n";
+        printf("Received Request:\n");
+        printf("%s", raw_request);
+
 
         HTTPRequest req;
         int valid = parse_request(raw_request, &req);
@@ -36,14 +38,34 @@ int main(){
             printf("[LOG]: Invalid Request or Parser Error");
         }
         
-        printf("HEADER OF REQUEST: \n");
-        printf("METHOD: %s PATH: %s VERSION: %s\n", req.method, req.path, req.version);
+        // printf("HEADER OF REQUEST: \n");
+        // printf("METHOD: %s PATH: %s VERSION: %s\n", req.method, req.path, req.version);
 
-        for(int i=0; i<req.header_count; i++){
-            printf("HEADER:\n");
-            printf("%s : %s\n", req.headers[i].key, req.headers[i].value);
+        // for(int i=0; i<req.header_count; i++){
+        //     printf("HEADER i: %d ", i);
+        //     printf("%s : %s\n", req.headers[i].key, req.headers[i].value);
+        // }
+
+        HTTPResponse res;
+        process_static_request(&req, &res);
+
+        free(raw_request);
+
+        char response_buffer[2048];
+        size_t header_bytes = serialize_response(&res, response_buffer, strlen(response_buffer));
+
+        // send header
+        send_response(&clt, response_buffer, header_bytes);
+
+        if(!res.body.is_file){
+            send_response(&clt, res.body.body_source, strlen(res.body.body_source));
         }
-        // close_client(&clt);
+        else{
+
+            free(res.body.file_source);
+        }
+
+        close_client(&clt);
 
         i++;
         printf("Served %d Client\n", i);

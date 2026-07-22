@@ -23,6 +23,14 @@ char* find_crlf(char* string){
     return NULL;
 }
 
+
+/*
+ * HTTPRequest fields point directly into the receive buffer.
+ * The receive buffer must remain valid for the entire lifetime
+ * of the HTTPRequest.
+ */
+
+
 // int basically here is 0 means gracefully filled struct instead -1 means INVALID REQUEST
 int parse_request(char* buffer, HTTPRequest *request){
     int parsed_lines = 0;

@@ -4,10 +4,11 @@
 #include "static.h"
 #include "response.h"
 #include <stdio.h>
-// these three headers are for sending appropriate file via optimised sendfile function
-#include <sys/sendfile.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <string.h> // for strlen()
+#include <stdlib.h> // for free()
+#include <sys/sendfile.h> // for sendfile()
+#include <fcntl.h> // for file related system calls
+#include <unistd.h> // for general POSIX system calls close() read() write()
 
 int main(){
     // create server instance
@@ -21,7 +22,7 @@ int main(){
     printf("Server instance create successfully..\n");
 
     int i=0;
-    while(i < 1){
+    while(i < 2){
         Client clt;
         clt = accept_request(&server);
 
@@ -52,8 +53,11 @@ int main(){
         free(raw_request);
 
         char response_buffer[2048];
-        size_t header_bytes = serialize_response(&res, response_buffer, strlen(response_buffer));
+        size_t header_bytes = serialize_response(&res, response_buffer, 2048);
 
+        printf("\n");
+        printf("HEADER MADE BY SERVER: \n");
+        printf("%s\n", response_buffer);
         // send header
         send_response(&clt, response_buffer, header_bytes);
 
@@ -61,7 +65,12 @@ int main(){
             send_response(&clt, res.body.body_source, strlen(res.body.body_source));
         }
         else{
+            // read only
+            int file_fd = open(res.body.file_source, O_RDONLY);
 
+            sendfile(clt.fd, file_fd, NULL, res.body.length);
+
+            close(file_fd);
             free(res.body.file_source);
         }
 

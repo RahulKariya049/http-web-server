@@ -28,7 +28,7 @@ Client accept_request(Server* server);
 char* receive_request(Client* client);
 
 // this function writes response of requested resource to client socket and returns number of bytes written
-int send_response(Client* client, char* response_buffer, size_t size);
+int send_response(Client* client, const char* response_buffer, size_t size);
 
 
 void close_client(Client* client);

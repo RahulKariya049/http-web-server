@@ -118,7 +118,7 @@ char *receive_request(Client *client)
     return req_buf;
 }
 
-int send_response(Client* client, char* response_buffer, size_t size){
+int send_response(Client* client, const char* response_buffer, size_t size){
     int written_bytes = send(client->fd, response_buffer, size, 0);
     
     if(written_bytes == -1){

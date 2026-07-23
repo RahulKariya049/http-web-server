@@ -2,6 +2,7 @@
 #include <string.h> // for strcmp and other helpers
 #include <sys/stat.h> // for struct stat
 #include <stdlib.h> // for free(ptr)
+#include <stdio.h> // for printf()
 
 // this helper fills up the struct which it got from main basically fills up HTTPResponse struct
 void process_static_request(const HTTPRequest* req, HTTPResponse* res){
@@ -50,6 +51,7 @@ void process_static_request(const HTTPRequest* req, HTTPResponse* res){
         res->status = HTTP_NOT_FOUND;
         res->body.is_file = false;
         res->mime = MIME_HTML;
+        printf("%s\n",temp_file_source);
         printf("[LOG]: Bruhh this path does not even Exists\n");
         free(temp_file_source);
         return;

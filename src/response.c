@@ -1,9 +1,7 @@
 #include <stddef.h> // for size_t
 #include "http.h"
 #include <stdio.h>
-
-static const char BAD_REQUEST_PAGE[] =
-"<h1>BRUHH... THAT REQUEST MAKES NO SENSE </h1>";
+#include <string.h> // for strlen()
 
 static const char METHOD_NOT_ALLOWED_PAGE[] =
 "<h1>BRUHHHH LET ME SUPPORT THIS METHOD MAN </h1>";
@@ -16,6 +14,7 @@ static const char BAD_REQUEST_PAGE[] =
 
 static const char INTERNAL_SERVER_ERROR_PAGE[] =
 "<h1>BRUHH..  I BROKE SOMETHING INSIDE THE SERVER </h1>";
+
 
 const char *generate_error_page(HTTPStatus status)
 {
@@ -53,6 +52,7 @@ const char* mime_to_string(MIMEType mime){
         case MIME_TEXT:
             return "text/plain";
     }
+    return "text/plain";
 }
 
 const char* status_reason(HTTPStatus status){
@@ -67,10 +67,17 @@ const char* status_reason(HTTPStatus status){
             return "Method Not Allowed";
         case HTTP_NOT_FOUND:
             return "Not Found";
+        case HTTP_FORBIDDEN:
+            return "Forbidden";
     }
+    return NULL;
 }
 
 size_t serialize_response(HTTPResponse* response, char* buffer, size_t bufsize){
+    if(response->status != HTTP_OK){
+        response->body.body_source = generate_error_page(response->status);
+        response->body.length = strlen(generate_error_page(response->status));
+    }
     int written = snprintf(buffer, bufsize,
          "HTTP/1.1 %d %s\r\n"
          "Server: RahulHTTP\r\n"
@@ -79,9 +86,7 @@ size_t serialize_response(HTTPResponse* response, char* buffer, size_t bufsize){
          "Connection: close\r\n"
          "\r\n", response->status, status_reason(response->status), mime_to_string(response->mime), response->body.length);
 
-    if(response->status != HTTP_OK){
-        response->body.body_source = generate_error_page(response->status);
-    }
+    
 
     return (size_t)written;
 }

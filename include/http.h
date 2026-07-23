@@ -45,7 +45,7 @@ typedef struct
     bool is_file;
 
     char *file_source;
-    char *body_source;
+    const char *body_source; // this is because we have custom made error pages definedd in response.c as read only
 
     size_t length;
 

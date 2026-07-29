@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" fill="none">
+
+  <!-- ============ CONNECTING LINES (the "graph" scaffold) ============ -->
+  <g stroke="#1D4E89" stroke-width="1" opacity="0.35">
+    <path d="M120 120 L260 90"/>
+    <path d="M260 90 L400 150"/>
+    <path d="M400 150 L470 280"/>
+    <path d="M470 280 L410 420"/>
+    <path d="M410 420 L280 470"/>
+    <path d="M280 470 L150 430"/>
+    <path d="M150 430 L100 300"/>
+    <path d="M100 300 L120 120"/>
+    <path d="M260 90 L100 300"/>
+    <path d="M400 150 L280 470"/>
+    <path d="M150 430 L470 280"/>
+    <path d="M100 300 L280 470"/>
+  </g>
+
+  <!-- ============ DASHED ORBIT (echoes card 2's arc) ============ -->
+  <path d="M40 560 A140 140 0 0 1 300 620" stroke="#1D4E89" stroke-width="1" stroke-dasharray="4 5" opacity="0.4"/>
+  <circle cx="40" cy="560" r="4" fill="#1D4E89" opacity="0.6"/>
+
+  <!-- ============ WIREFRAME CUBE (echoes card 2) ============ -->
+  <g stroke="#1D4E89" stroke-width="1.5" opacity="0.85">
+    <path d="M330 540 L400 540 L430 510 L360 510 Z"/>
+    <path d="M330 540 L330 600 L400 600 L400 540"/>
+    <path d="M400 600 L430 570 L430 510"/>
+    <path d="M330 600 L360 570 L360 510"/>
+    <path d="M360 570 L430 570"/>
+  </g>
+  <!-- vectors shooting off the cube, orange accent -->
+  <path d="M375 525 L340 460" stroke="#D19A3A" stroke-width="1.5"/>
+  <path d="M375 525 L440 470" stroke="#D19A3A" stroke-width="1.5"/>
+  <path d="M337 456 l6 -14 l-16 4 z" fill="#D19A3A"/>
+  <path d="M443 465 l14 -8 l-6 16 z" fill="#D19A3A"/>
+
+  <!-- ============ CIRCLE WITH CHORDS (echoes card 1) ============ -->
+  <g opacity="0.85">
+    <circle cx="460" cy="150" r="55" stroke="#1D4E89" stroke-width="1.2"/>
+    <g stroke="#D19A3A" stroke-width="0.7" opacity="0.7">
+      <path d="M460 95 L505 175"/>
+      <path d="M460 95 L415 175"/>
+      <path d="M415 175 L505 175"/>
+      <path d="M460 95 L460 205"/>
+      <path d="M405 150 L515 150"/>
+    </g>
+    <circle cx="460" cy="95" r="3" fill="#1D4E89"/>
+    <circle cx="505" cy="175" r="3" fill="#1D4E89"/>
+    <circle cx="415" cy="175" r="3" fill="#1D4E89"/>
+  </g>
+
+  <!-- ============ GRAPH NODES ============ -->
+  <circle cx="120" cy="120" r="6" fill="#1D4E89"/>
+  <circle cx="260" cy="90"  r="6" fill="#1D4E89"/>
+  <circle cx="400" cy="150" r="6" fill="#1D4E89"/>
+  <circle cx="470" cy="280" r="6" fill="#1D4E89"/>
+  <circle cx="410" cy="420" r="6" fill="#1D4E89"/>
+  <circle cx="150" cy="430" r="6" fill="#1D4E89"/>
+  <circle cx="100" cy="300" r="6" fill="#1D4E89"/>
+
+  <!-- accent hub node -->
+  <circle cx="280" cy="470" r="9" fill="#D19A3A"/>
+
+  <!-- ============ FLOATING MATH SYMBOLS ============ -->
+  <g fill="#1D4E89" font-family="Georgia, 'Times New Roman', serif" opacity="0.9">
+    <text x="185" y="205" font-size="30" font-style="italic">Σ</text>
+    <text x="330" y="270" font-size="26" font-style="italic">∫</text>
+    <text x="60"  y="200" font-size="22" font-style="italic">π</text>
+    <text x="220" y="530" font-size="24" font-style="italic">θ</text>
+    <text x="440" y="380" font-size="26" font-style="italic">λ</text>
+  </g>
+
+  <!-- ============ MATRIX BRACKET, near cube ============ -->
+  <g stroke="#1D4E89" stroke-width="1.5" opacity="0.7">
+    <path d="M245 480 L235 480 L235 545 L245 545"/>
+    <path d="M300 480 L310 480 L310 545 L300 545"/>
+  </g>
+  <g fill="#1D4E89" font-family="'Courier New', monospace" font-size="13" opacity="0.75">
+    <text x="250" y="500">1 0</text>
+    <text x="250" y="520">0 1</text>
+  </g>
+
+  <!-- ============ BINARY DIGITS, scattered small ============ -->
+  <g fill="#1D4E89" font-family="'Courier New', monospace" font-size="12" opacity="0.35">
+    <text x="30" y="380">01</text>
+    <text x="520" y="220">10</text>
+    <text x="200" y="40">101</text>
+    <text x="500" y="480">011</text>
+    <text x="70" y="500">10</text>
+  </g>
+
+</svg>

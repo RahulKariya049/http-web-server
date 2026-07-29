@@ -1,136 +1,168 @@
-# http-web-server
+# RahulHTTP
 
-A lightweight HTTP server written in C from scratch using Linux socket APIs.
+RahulHTTP is a lightweight HTTP/1.1 web server written in C using POSIX sockets on Linux. It serves static files, parses HTTP requests, generates standards-compliant HTTP responses, and is designed with a modular architecture where networking, parsing, response generation, and static file handling remain independent components.
 
-This project is a personal journey to understand how web servers work beneath frameworks. Instead of relying on existing libraries, RahulHTTP is being built layer by layer—from raw TCP sockets to parsing HTTP requests and serving static websites.
+## Features
 
----
-
-## Goals
-
-- Understand Linux socket programming
-- Learn HTTP by implementing it manually
-- Build a modular C codebase
-- Explore systems programming concepts such as file descriptors, system calls, networking, and process interaction
-- Serve static HTML, CSS, and JavaScript files
-
----
-
-## Current Progress
-
-### Networking Layer
-
-- TCP server using Linux socket APIs
-- Socket creation
-- Address binding
-- Listening for incoming connections
-- Accepting client connections
-- Sending and receiving raw bytes
-- Successfully communicates with modern browsers
-
-### HTTP Layer
-
-- Request parsing *(In Progress)*
-- Response generation *(Planned)*
-- Static file serving *(Planned)*
-- MIME type detection *(Planned)*
-- Persistent connections *(Planned)*
-
----
+* HTTP/1.1 request parsing
+* Static file serving
+* MIME type detection
+* Custom 404 error pages
+* Browser-compatible responses
+* Content-Length and Content-Type support
+* Modular architecture with clear separation of responsibilities
+* Tested across browsers and physical devices over a local network
 
 ## Project Structure
 
 ```
-RahulHTTP/
-│
-├── include/
-│   ├── server.h
-│   ├── http.h
-│   └── file.h
-│
-├── src/
-│   ├── main.c
-│   ├── server.c
-│   ├── http.c
-│   └── file.c
-│
-├── public/
-│   └── index.html
-│
-├── README.md
+src/
+├── main.c
+├── server.c
+├── parser.c
+├── response.c
+└── static.c
+
+include/
+├── http.h
+├── server.h
+├── parser.h
+├── response.h
+└── static.h
+
+public/
 ```
+
+## Module Responsibilities
+
+### http.h
+
+Defines the core HTTP data structures shared across the project.
+
+Contains:
+
+* `HTTPRequest`
+* `HTTPResponse`
+* `HTTPBody`
+* `Header`
+* `HTTPStatus` enum
+* `MIMEType` enum
 
 ---
 
-## Build
+### server.c / server.h
 
-```bash
-gcc src/*.c -Iinclude -Wall -Wextra -g -o RahulHTTP
-```
+Responsible for the networking layer.
 
-Run
+Provides:
 
-```bash
-./RahulHTTP
-```
+* `create_server()`
+* `accept_request()`
+* `receive_request()`
+* `send_response()`
+* `close_client()`
+* `close_server()`
 
-Open your browser and visit
-
-```
-http://localhost:6767
-```
+This module manages socket creation, connection handling, receiving client requests, transmitting responses, and server shutdown.
 
 ---
 
-## Technologies
+### parser.c / parser.h
 
-- C
-- Linux
-- POSIX Socket APIs
-- GCC
+Responsible for converting raw HTTP request bytes into an `HTTPRequest` structure.
+
+Includes small parsing helpers such as:
+
+* `find_char()`
+* `find_crlf()`
+
+along with the request parser itself.
 
 ---
 
-## Learning Objectives
+### static.c / static.h
 
-This project focuses on understanding the complete path of an HTTP request:
+Assists response generation by handling static resources.
+
+Responsibilities include:
+
+* Validating requested file paths using `stat()`
+* Determining appropriate MIME types
+* Identifying missing resources
+* Reporting the appropriate HTTP status back to the response layer
+
+This module does not serialize HTTP responses; it provides file-system information used to construct them.
+
+---
+
+### response.c / response.h
+
+Responsible for HTTP response serialization.
+
+Given a populated `HTTPResponse` structure, this module generates the exact byte stream that is transmitted to the client.
+
+Responsibilities include:
+
+* Writing the status line
+* Serializing HTTP headers
+* Formatting the final response buffer
+
+This module performs no routing or file validation—it only converts an `HTTPResponse` into a valid HTTP response.
+
+---
+
+## Request Lifecycle
 
 ```
-Browser
-    ↓
-TCP Connection
-    ↓
-Linux Kernel
-    ↓
-Socket API
-    ↓
-HTTP server
-    ↓
-HTTP Parsing
-    ↓
-Response Generation
-    ↓
-Browser Rendering
+Client
+    │
+    ▼
+server.c
+    │
+receive_request()
+    │
+    ▼
+parser.c
+    │
+HTTPRequest
+    │
+    ▼
+static.c
+    │
+File validation
+MIME detection
+Status selection
+    │
+    ▼
+response.c
+    │
+Serialize HTTPResponse
+into raw bytes
+    │
+    ▼
+server.c
+    │
+send_response()
+    │
+    ▼
+Client
 ```
 
----
+## Current Limitations
 
-## Roadmap
+* Handles one client connection at a time
+* Connection closes after every response (no persistent connections)
+* Supports static content only
+* No multithreading or event-driven I/O
+* No chunked transfer encoding
+* No HTTP/2 support
 
-- [x] TCP server
-- [x] Browser connection
-- [x] Receive HTTP requests
-- [ ] HTTP parser
-- [ ] HTTP response generator
-- [ ] Static website hosting
-- [ ] CSS & JavaScript support
-- [ ] MIME type detection
-- [ ] 404 responses
-- [ ] Keep-Alive support
-- [ ] Concurrent client handling
+## Future Roadmap
 
----
-
-## License
-
-This project is built for learning systems programming and computer networking.
+* Persistent (Keep-Alive) connections
+* Memory auditing and leak elimination
+* Thread pool architecture
+* Event-driven I/O (`epoll`)
+* Performance benchmarking and optimization
+* Linux kernel networking exploration
+* HTTP protocol enhancements

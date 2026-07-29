@@ -13,7 +13,7 @@
 int main(){
     // create server instance
     Server server;
-    server = create_server("127.0.0.1", 6767, 10);
+    server = create_server("", 6767, 10);
     
     if(server.fd == -1){
         printf("[LOG]: There is an error creating socket..\n");
@@ -22,7 +22,7 @@ int main(){
     printf("Server instance create successfully..\n");
 
     int i=0;
-    while(i < 2){
+    while(i < 50){
         Client clt;
         clt = accept_request(&server);
 

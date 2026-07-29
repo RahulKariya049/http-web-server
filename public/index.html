@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Behind Machines</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/index.html" class="logo">
+                <img src="/assets/logo.svg" alt="logo">
+                <span>Math Behind Machines</span>
+            </a>
+            <div class="navigation-links">
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#featured-blogs">Blogs</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <div class="eyebrow">A Journal of Applied Mathematics</div>
+                <h1>Math Behind Machines</h1>
+                <p class="hero-subtitle">Exploring the mathematics hidden inside computing.</p>
+                <p class="hero-description">
+                    From the number theory guarding your passwords to the linear algebra rendering
+                    your games — technical essays that trace computer science back to the equations
+                    that make it work.
+                </p>
+                <div class="hero-actions">
+                    <a href="#featured-blogs" class="button">
+                        Explore Blogs
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <a href="/gallery.html" class="text-link">View gallery</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/assets/hero.svg" alt="Hero-image">
+            </div>
+        </section>
+        <section id="featured-blogs">
+            <div class="wrap">
+                <div class="section-heading">
+                    <div class="eyebrow">FEATURED BLOGS</div>
+                    <h2>Recently Published Blogs</h2>
+                </div>
+                <div class="container">
+                    <article class="blog-card">
+                        <div class="card-top">
+                            <img src="/assets/rsa-cover.svg" alt="RSA Blog">
+                        </div>
+                        <div class="card-content">
+                            <div class="tags">CRYPTOGRAPHY</div>
+                            <h3>The Number Theory Behind Encryption</h3>
+                            <p>How modular arithmetic and the difficulty of factoring large primes became the
+                                mathematical
+                                backbone
+                                of modern secure communication.
+                            </p>
+                            <a href="/rsa.html" class="readmore"> Read More
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="black" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                    <article class="blog-card">
+                        <div class="card-top">
+                            <img src="/assets/game-engines.svg" alt="Game-Engines and Linear Algebra">
+                        </div>
+                        <div class="card-content">
+                            <div class="tags">GRAPHICS AND GAME ENGINES</div>
+                            <h3>Vector Math and the Physics of Game Engines</h3>
+                            <p>Dot products, matrix transforms, and quaternions — the linear algebra quietly deciding
+                                how light, motion, and collision behave on screen.
+                            </p>
+                            <a href="/webpages/vectormath.html" class="readmore"> Read More
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="black" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                    <article class="blog-card">
+                        <div class="card-top">
+                            <img src="/assets/graph-theory.svg" alt="Graph Theory">
+                        </div>
+                        <div class="card-content">
+                            <div class="tags">ALGORITHMS</div>
+                            <h3>Graph Theory and the Shape of the Internet</h3>
+                            <p>Spanning trees, shortest paths, and the routing algorithms that let a packet find its way
+                                across a network of unknown shape.
+                            </p>
+                            <a href="/webpages/shortestpath.html" class="readmore"> Read More
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="black" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section id="gallery">
+            <div class="wrap">
+                <div class="section-heading">
+                    <div class="eyebrow">MATHEMATICAL GALLERY</div>
+                    <h2>Animations, Fractals</h2>
+                </div>
+                <div class="grid">
+                    <figure class="gallery-cards">
+                        <img src="/assets/ulam-spiral.jpg" alt="Ulam-Spiral">
+                        <h3>Prime Spiral</h3>
+                        <figcaption>The Ulam spiral — primes plotted along an outward square path. </figcaption>
+                    </figure>
+                    <figure class="gallery-cards">
+                        <img src="/assets/mandelbrot-set.jpg" alt="Mandelbrot-Set">
+                        <h3>Mandelbrot Set</h3>
+                        <figcaption>Escape-time iteration of z → z² + c across the complex plane.</figcaption>
+                    </figure>
+                    <figure class="gallery-cards">
+                        <img src="/assets/fourier-waves.png" alt="Fourier-waves">
+                        <h3>Fourier Waves</h3>
+                        <figcaption>Overlapping sinusoids summing into a single composite signal.</figcaption>
+                    </figure>
+                </div>
+                <div class="view-button">
+                    <a href="/gallery.html" class="button-outline">
+                        View Gallery
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section id="about">
+            <div class="wrap">
+                <div class="section-heading">
+                    <div class="eyebrow">About the Journal</div>
+                    <h2>Why Math Behind Machines?</h2>
+                </div>
+                <div class="about-content">
+                    <blockquote class="quote">
+                        "Math Behind Machines explores the mathematical ideas powering computer science through
+                        technical
+                        articles and beautiful visualizations."
+                    </blockquote>
+                    <div class="about-description">
+                        Every system we rely on — a search engine, a game, an encrypted message, a distributed database
+                        — is a
+                        piece of mathematics wearing an engineer's clothes. We write essays that pull that mathematics
+                        back into
+                        view: the proofs, the transforms, the geometry, and the theory that make computing possible in
+                        the first
+                        place.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="wrap">
+            <div class="footer-brand">
+                <a href="/index.html" class="logo">
+                    <img src="/assets/logo.svg" alt="Logo">
+                    <span>Math Behind Machines</span>
+                </a>
+                <p>Technical essays on the mathematics behind computer science.</p>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Math Behind Machines. All rights reserved.</span>
+                <span>Typeset with Newsreader &amp; IBM Plex.</span>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
